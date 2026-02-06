@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokédex - Pixel Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23e63946'/><circle cx='16' cy='16' r='8' fill='white' stroke='%23333' stroke-width='2'/><circle cx='16' cy='16' r='4' fill='%23333'/><line x1='0' y1='16' x2='32' y2='16' stroke='%23333' stroke-width='2'/></svg>">
+</head>
+<body>
+  <div id="scanlines"></div>
+
+  <!-- Title Screen -->
+  <div id="title-screen" class="active">
+    <div class="title-pokeball">
+      <div class="pokeball-top"></div>
+      <div class="pokeball-mid">
+        <div class="pokeball-button"></div>
+      </div>
+      <div class="pokeball-bottom"></div>
+    </div>
+    <h1 class="title-text">POKÉDEX</h1>
+    <p class="title-sub">Pixel Edition</p>
+    <p class="blink-text">PRESS START</p>
+    <p class="title-hint">Click anywhere or press Enter</p>
+  </div>
+
+  <!-- Main Pokédex App -->
+  <div id="pokedex-app">
+    <!-- DS Device Frame -->
+    <div class="ds-device">
+      <!-- Top Screen - Pokemon Display -->
+      <div class="ds-top-shell">
+        <div class="ds-hinge-left"></div>
+        <div class="ds-hinge-right"></div>
+        <div class="ds-top-screen">
+          <div class="screen-bezel">
+            <div class="screen-indicator"></div>
+            <div id="top-screen" class="screen-inner">
+              <!-- Pokemon Card Display -->
+              <div id="pokemon-display">
+                <div id="pokemon-card" class="poke-card rarity-common">
+                  <div class="card-holo-overlay"></div>
+                  <div class="card-sparkles"></div>
+                  <!-- Card Header -->
+                  <div class="card-header">
+                    <span class="card-stage" id="card-stage">Basic</span>
+                    <span class="card-title" id="pokemon-name">Bulbasaur</span>
+                    <span class="card-hp">HP <span id="card-hp-val">45</span></span>
+                    <div class="card-type-icon" id="card-type-icon"></div>
+                  </div>
+                  <!-- Card Art -->
+                  <div class="card-art-frame" id="card-art-frame">
+                    <div class="card-art-bg" id="card-art-bg"></div>
+                    <img id="pokemon-sprite" src="" alt="Pokemon" class="pokemon-sprite">
+                    <div id="shiny-sparkle" class="shiny-sparkle hidden">✦</div>
+                  </div>
+                  <!-- Card Genus & Descriptors -->
+                  <div class="card-meta">
+                    <span class="card-genus" id="genus-text">Seed Pokémon</span>
+                    <span class="card-number" id="pokemon-number">#001</span>
+                  </div>
+                  <!-- Type Badges -->
+                  <div class="type-badges" id="type-badges"></div>
+                  <!-- Card Footer -->
+                  <div class="card-footer">
+                    <div class="card-footer-left">
+                      <span class="card-descriptor"><b>WT:</b> <span id="card-weight">6.9 kg</span></span>
+                      <span class="card-descriptor"><b>HT:</b> <span id="card-height">0.7 m</span></span>
+                    </div>
+                    <div class="card-rarity-symbol" id="card-rarity-symbol" title="Common">●</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pokemon Detail View (hidden by default) -->
+              <div id="detail-view" class="hidden">
+                <div class="detail-tabs">
+                  <button class="tab-btn active" data-tab="info">INFO</button>
+                  <button class="tab-btn" data-tab="stats">STATS</button>
+                  <button class="tab-btn" data-tab="moves">MOVES</button>
+                  <button class="tab-btn" data-tab="about">ABOUT</button>
+                </div>
+                <div id="tab-info" class="tab-content active">
+                  <div class="info-grid">
+                    <div class="info-item">
+                      <span class="info-label">HEIGHT</span>
+                      <span class="info-value" id="pokemon-height">0.7 m</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">WEIGHT</span>
+                      <span class="info-value" id="pokemon-weight">6.9 kg</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">ABILITY</span>
+                      <span class="info-value" id="pokemon-ability">Overgrow</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">HIDDEN</span>
+                      <span class="info-value" id="pokemon-hidden-ability">Chlorophyll</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">BASE EXP</span>
+                      <span class="info-value" id="pokemon-base-exp">64</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">CATCH RATE</span>
+                      <span class="info-value" id="pokemon-catch-rate">45</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">GROWTH</span>
+                      <span class="info-value" id="pokemon-growth-rate">Medium Slow</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">RARITY</span>
+                      <span class="info-value" id="pokemon-rarity">Common</span>
+                    </div>
+                  </div>
+                  <div class="flavor-text" id="flavor-text">
+                    A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
+                  </div>
+                </div>
+                <div id="tab-stats" class="tab-content hidden">
+                  <div class="stats-list" id="stats-list"></div>
+                  <div class="bst-row" id="bst-row">
+                    <span class="bst-label">BST</span>
+                    <span class="bst-value" id="bst-value">318</span>
+                  </div>
+                </div>
+                <div id="tab-moves" class="tab-content hidden">
+                  <div class="moves-list" id="moves-list"></div>
+                </div>
+                <div id="tab-about" class="tab-content hidden">
+                  <div class="about-grid">
+                    <div class="info-item">
+                      <span class="info-label">EGG GROUPS</span>
+                      <span class="info-value" id="pokemon-egg-groups">Monster, Grass</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">GENDER</span>
+                      <span class="info-value" id="pokemon-gender">♂ 87.5% ♀ 12.5%</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">HABITAT</span>
+                      <span class="info-value" id="pokemon-habitat">Grassland</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">HAPPINESS</span>
+                      <span class="info-value" id="pokemon-happiness">70</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">HATCH STEPS</span>
+                      <span class="info-value" id="pokemon-hatch">5120</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">SHAPE</span>
+                      <span class="info-value" id="pokemon-shape">Quadruped</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">COLOR</span>
+                      <span class="info-value" id="pokemon-color">Green</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">GENERATION</span>
+                      <span class="info-value" id="pokemon-generation">Gen I</span>
+                    </div>
+                  </div>
+                  <div class="evo-chain" id="evo-chain"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Screen - Navigation -->
+      <div class="ds-bottom-shell">
+        <div class="ds-bottom-screen">
+          <div class="screen-bezel bottom-bezel">
+            <div id="bottom-screen" class="screen-inner">
+              <!-- Pokemon Grid / List View -->
+              <div id="pokemon-grid-view">
+                <div class="search-bar">
+                  <span class="search-icon">⌕</span>
+                  <input type="text" id="search-input" placeholder="Search Pokémon..." autocomplete="off">
+                  <button id="gen-filter-btn" class="pixel-btn small">GEN I</button>
+                </div>
+                <div id="pokemon-grid" class="pokemon-grid"></div>
+                <div class="grid-nav">
+                  <button id="prev-page" class="pixel-btn nav-btn">◄ PREV</button>
+                  <span id="page-info" class="page-info">1 / 1</span>
+                  <button id="next-page" class="pixel-btn nav-btn">NEXT ►</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- D-Pad and Buttons -->
+        <div class="ds-controls">
+          <div class="dpad">
+            <button class="dpad-btn dpad-up" id="dpad-up">▲</button>
+            <button class="dpad-btn dpad-left" id="dpad-left">◄</button>
+            <button class="dpad-btn dpad-center"></button>
+            <button class="dpad-btn dpad-right" id="dpad-right">►</button>
+            <button class="dpad-btn dpad-down" id="dpad-down">▼</button>
+          </div>
+          <div class="action-buttons">
+            <button class="action-btn btn-a" id="btn-a">A</button>
+            <button class="action-btn btn-b" id="btn-b">B</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generation Select Modal -->
+    <div id="gen-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>SELECT GENERATION</h3>
+        <div class="gen-list">
+          <button class="gen-btn active" data-gen="1" data-start="1" data-end="151">GEN I<br><small>Kanto</small></button>
+          <button class="gen-btn" data-gen="2" data-start="152" data-end="251">GEN II<br><small>Johto</small></button>
+          <button class="gen-btn" data-gen="3" data-start="252" data-end="386">GEN III<br><small>Hoenn</small></button>
+          <button class="gen-btn" data-gen="4" data-start="387" data-end="493">GEN IV<br><small>Sinnoh</small></button>
+          <button class="gen-btn" data-gen="5" data-start="494" data-end="649">GEN V<br><small>Unova</small></button>
+          <button class="gen-btn" data-gen="6" data-start="650" data-end="721">GEN VI<br><small>Kalos</small></button>
+          <button class="gen-btn" data-gen="7" data-start="722" data-end="809">GEN VII<br><small>Alola</small></button>
+          <button class="gen-btn" data-gen="8" data-start="810" data-end="905">GEN VIII<br><small>Galar</small></button>
+          <button class="gen-btn" data-gen="9" data-start="906" data-end="1025">GEN IX<br><small>Paldea</small></button>
+        </div>
+        <button class="pixel-btn" id="close-gen-modal">BACK</button>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading hidden">
+      <div class="pokeball-spin">
+        <div class="pb-top"></div>
+        <div class="pb-mid"><div class="pb-btn"></div></div>
+        <div class="pb-bottom"></div>
+      </div>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <!-- Cry audio element -->
+  <audio id="pokemon-cry" preload="none"></audio>
+
+  <script src="app.js"></script>
+</body>
+</html>
